@@ -1,4 +1,3 @@
-
 from flask import Flask, request
 import datetime
 import uuid
@@ -58,8 +57,37 @@ def index():
 
     return '''
     <form method="post">
-        <textarea name="message"></textarea><br>
+        <textarea name="message" placeholder="Enter your message here..."></textarea>
+        <br><br>
         <button type="submit">Submit</button>
+        <style> 
+textarea {
+  width: 100%;
+  height: 150px;
+  padding: 12px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+
+    
+    transition: transform 0.2s ease;
+}
+button:hover {
+    transform: scale(1.05);
+}
+</style>
     </form>
     '''
 
@@ -89,6 +117,14 @@ def get_message(message_id):
 
     now = datetime.datetime.now()
 
+    # ---------------- 30 MIN EXPIRY ----------------
+    if now - created_time > datetime.timedelta(minutes=30):
+        return "Message expired", 410
+
+    return f"""
+    Message: {message}<br>
+    Created: {timestamp}
+    """
     # ---------------- EXPIRY LOGIC ----------------
     if now - created_time > datetime.timedelta(minutes=30):
         return "Message expired", 410
