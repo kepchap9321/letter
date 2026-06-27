@@ -53,7 +53,7 @@ def index():
 
         insert_message(message_id, message)
 
-        return f"Link: http://127.0.0.1:5000/message/{message_id}"
+        return f"Link: https://sendaletter.netlify.app/message/{message_id}"
 
     return '''
     <form method="post">
